@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,7 +26,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        LayoutInflater inflater = getLayoutInflater();
+        View main = inflater.inflate(R.layout.activity_main, null);
+        setContentView(main);
         startActivity(new Intent(this,Splash.class));
         startActivityForResult(new Intent(this, LoginActivity.class),1000);
         simpleSideDrawer = new SimpleSideDrawer(this);
@@ -34,6 +37,15 @@ public class MainActivity extends AppCompatActivity {
         alarm = (TextView)findViewById(R.id.alarm);
         brightness = (TextView)findViewById(R.id.brightness);
         logout = (TextView)findViewById(R.id.logout);
+
+        main.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Log.d("candle","슬라이드");
+                simpleSideDrawer.toggleRightDrawer();
+                return false;
+            }
+        });
 
         Handler mHandler = new Handler(){
             @Override
@@ -57,6 +69,18 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        alarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, AlarmActivity.class));
+            }
+        });
+        brightness.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, BrightnessActivity.class));
+            }
+        });
 
         LoopingThread thread = new LoopingThread(mHandler);
         thread.setDaemon(true);
@@ -66,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 DeviceStatus.setStatus_change(1);
-                //simpleSideDrawer.toggleRightDrawer();
+
             }
         });
 

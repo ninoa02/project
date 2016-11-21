@@ -5,7 +5,7 @@ package com.example.sangy.arduinonandroid;
  */
 
 public class DeviceStatus {
-    final static String SERVER = "http://10.138.1.49:8080/candle/";
+    final static String SERVER = "http://192.168.219.109:8080/candle/";
     private static int device_no = 1234;
     private static int bright_set = 40;
     private static int bright_sta;

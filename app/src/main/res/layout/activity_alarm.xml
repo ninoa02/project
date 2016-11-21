@@ -3,13 +3,26 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="20dp">
-
+    <TextView
+        android:paddingLeft="65dp"
+        android:text="시작시간"
+        android:textColor="#fff"
+        android:textSize="15sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
     <TimePicker
         android:timePickerMode="spinner"
         android:id="@+id/timePickerStart"
         android:layout_width="match_parent"
         android:layout_height="170dp">
     </TimePicker>
+    <TextView
+        android:paddingLeft="65dp"
+        android:text="종료시간"
+        android:textColor="#fff"
+        android:textSize="15sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
     <TimePicker
         android:timePickerMode="spinner"
         android:id="@+id/timePickerStop"
@@ -18,23 +31,24 @@
     </TimePicker>
 
     <LinearLayout
-        android:paddingTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center">
         <Button
+            android:textSize="15sp"
             android:text="설정"
             android:onClick="setting"
             android:textColor="#fff"
             android:id="@+id/setAlarm"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content" />
+            android:layout_width="120dp"
+            android:layout_height="50dp" />
         <Button
+            android:textSize="15sp"
             android:text="해제"
             android:onClick="release"
             android:textColor="#fff"
             android:id="@+id/releaseAlarm"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content" />
+            android:layout_width="120dp"
+            android:layout_height="50dp" />
     </LinearLayout>
 </LinearLayout>
