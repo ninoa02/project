@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TimePicker;
 
+import static android.R.attr.start;
+
 /**
  * Created by sangy on 2016-11-13.
  */
@@ -19,6 +21,10 @@ public class AlarmActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alarm);
         timePickerStart = (TimePicker)findViewById(R.id.timePickerStart);
         timePickerStop = (TimePicker)findViewById(R.id.timePickerStop);
+        timePickerStart.setHour(12);
+        timePickerStart.setMinute(5);
+        timePickerStop.setHour(13);
+        timePickerStop.setMinute(34);
 
 
     }
