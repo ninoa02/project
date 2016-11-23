@@ -43,19 +43,16 @@ public class SignupActivity extends AppCompatActivity {
                 if( etEmail.getText().toString().length() == 0 ) {
                     Toast.makeText(SignupActivity.this, "Email을 입력하세요!", Toast.LENGTH_SHORT).show();
                     etEmail.requestFocus();
-                    return;
                 }
                 // 비밀번호 입력 확인
                 if( etPassword.getText().toString().length() == 0 ) {
                     Toast.makeText(SignupActivity.this, "비밀번호를 입력하세요!", Toast.LENGTH_SHORT).show();
                     etPassword.requestFocus();
-                    return;
                 }
                 // 비밀번호 확인 입력 확인
                 if( etPasswordConfirm.getText().toString().length() == 0 ) {
                     Toast.makeText(SignupActivity.this, "비밀번호 확인을 입력하세요!", Toast.LENGTH_SHORT).show();
                     etPasswordConfirm.requestFocus();
-                    return;
                 }
                 // 비밀번호 일치 확인
                 if( !etPassword.getText().toString().equals(etPasswordConfirm.getText().toString()) ) {
@@ -63,7 +60,6 @@ public class SignupActivity extends AppCompatActivity {
                     etPassword.setText("");
                     etPasswordConfirm.setText("");
                     etPassword.requestFocus();
-                    return;
                 }
                 //회원가입 처리
                 Handler signupHandler = new Handler(){
@@ -87,6 +83,7 @@ public class SignupActivity extends AppCompatActivity {
                 }
                 Intent result = new Intent(getApplicationContext(),LoginActivity.class);
                 result.putExtra("email", etEmail.getText().toString());
+                result.putExtra("password", etPassword.getText().toString());
                 // 자신을 호출한 Activity로 데이터를 보낸다.
                 setResult(RESULT_OK, result);
                 finish();

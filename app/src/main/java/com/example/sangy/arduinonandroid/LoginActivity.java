@@ -29,6 +29,8 @@ public class LoginActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+
         startActivity(new Intent(this,Splash.class));
         emailInput = (EditText)findViewById(R.id.emailInput);
         passwordInput = (EditText)findViewById(R.id.passwordInput);
@@ -37,6 +39,7 @@ public class LoginActivity extends Activity{
         checkBox = (CheckBox)findViewById(R.id.checkBox);
         emailInput.setText("1234");
         passwordInput.setText("1234");
+
         //메인 핸들러 - 네트워크 스레드의 처리를 받아
         final Handler mHandler = new Handler(){
             @Override
@@ -70,8 +73,7 @@ public class LoginActivity extends Activity{
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),SignupActivity.class);
-                startActivityForResult(intent,1000);
+                startActivityForResult(new Intent(getApplicationContext(),SignupActivity.class),1000);
             }
         });
     }
@@ -88,6 +90,7 @@ public class LoginActivity extends Activity{
 
         if(requestCode == 1000 && resultCode == RESULT_OK) {
             emailInput.setText(data.getStringExtra("email"));
+            passwordInput.setText(data.getStringExtra("password"));
         }
     }
 }

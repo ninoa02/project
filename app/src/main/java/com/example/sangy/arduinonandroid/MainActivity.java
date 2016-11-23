@@ -26,11 +26,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        메인화면이 뜬다
         LayoutInflater inflater = getLayoutInflater();
         View main = inflater.inflate(R.layout.activity_main, null);
         setContentView(main);
+
+//        스플래시(로딩화면)이 뜬다
         startActivity(new Intent(this,Splash.class));
+
+//        로그인 화면을 띄운다
         startActivityForResult(new Intent(this, LoginActivity.class),1000);
+
+
+
+
         simpleSideDrawer = new SimpleSideDrawer(this);
         simpleSideDrawer.setRightBehindContentView(R.layout.right_menu);
         candle = (ImageView)findViewById(R.id.candle);
