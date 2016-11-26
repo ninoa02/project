@@ -11,6 +11,8 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -20,13 +22,13 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.navdrawer.SimpleSideDrawer;
 
+import static android.os.Build.VERSION_CODES.M;
+import static com.example.sangy.arduinonandroid.R.id.alarm;
+import static com.example.sangy.arduinonandroid.R.id.brightness;
+import static com.example.sangy.arduinonandroid.R.id.logout;
+
 public class MainActivity extends AppCompatActivity {
-    private SimpleSideDrawer simpleSideDrawer;
     private ImageView candle;
-    private TextView alarm;
-    private TextView brightness;
-    private TextView connectionCycle;
-    private TextView logout;
     private Gson gson = new Gson();
     private LoopingThread thread;
     private Handler mHandler;
@@ -37,38 +39,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        메인화면이 뜬다
-        LayoutInflater inflater = getLayoutInflater();
-        View main = inflater.inflate(R.layout.activity_main, null);
-        setContentView(main);
+        setContentView(R.layout.activity_main);
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = mPreferences.edit();
         DeviceStatus.setDevice_no(mPreferences.getInt("device_no",0));
         DeviceStatus.setBright_sta(mPreferences.getInt("bright_set",0));
-
-
 
 //        스플래시(로딩화면)이 뜬다
         startActivity(new Intent(this,Splash.class));
 
 //        로그인 화면을 띄운다
         startActivityForResult(new Intent(this, LoginActivity.class),1000);
-
-        simpleSideDrawer = new SimpleSideDrawer(this);
-        simpleSideDrawer.setRightBehindContentView(R.layout.right_menu);
-        candle = (ImageView)findViewById(R.id.candle);
-        alarm = (TextView)findViewById(R.id.alarm);
-        connectionCycle = (TextView)findViewById(R.id.connectionCycle);
-        brightness = (TextView)findViewById(R.id.brightness);
-        logout = (TextView)findViewById(R.id.logout);
-
-        main.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                Log.d("candle","슬라이드");
-                simpleSideDrawer.toggleRightDrawer();
-                return false;
-            }
-        });
 
         mHandler = new Handler(){
             @Override
@@ -92,15 +73,29 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        alarm.setOnClickListener(new View.OnClickListener() {
+
+        candle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, AlarmActivity.class));
+                DeviceStatus.setStatus_change(1);
+
             }
         });
-        brightness.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case alarm:
+
+                break;
+            case brightness:
                 View brView = getLayoutInflater().inflate(R.layout.activity_brightness, null);
                 final SeekBar seekBar = (SeekBar)brView.findViewById(R.id.seekBar);
                 AlertDialog.Builder dlg = new AlertDialog.Builder(MainActivity.this);
@@ -121,29 +116,14 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 dlg.setView(brView);
+                break;
+            case R.id.connectionCycle:
 
-            }
-        });
-        connectionCycle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //통신주기설정 완성할 것
-//                AlertDialog.Builder dlg = new AlertDialog.Builder(MainActivity.this);
-//                dlg.setTitle("통신주기 설정");
-//                dlg.setSingleChoiceItems();
-//                dlg.setPositiveButton("저장");
-
-
-            }
-        });
-
-        candle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DeviceStatus.setStatus_change(1);
-
-            }
-        });
+                break;
+            case logout:
+                break;
+        }
+        return true;
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
