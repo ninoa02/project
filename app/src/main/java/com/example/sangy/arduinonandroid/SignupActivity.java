@@ -65,7 +65,16 @@ public class SignupActivity extends AppCompatActivity {
                 Handler signupHandler = new Handler(){
                     @Override
                     public void handleMessage(Message msg) {
-                        Toast.makeText(getApplicationContext(), "회원가입을 완료했습니다!", Toast.LENGTH_SHORT).show();
+                        if(msg.obj.toString().equals("1")){
+                            Toast.makeText(getApplicationContext(), "회원가입을 완료했습니다", Toast.LENGTH_SHORT).show();
+                            Intent result = new Intent(getApplicationContext(),LoginActivity.class);
+                            result.putExtra("email", etEmail.getText().toString());
+                            result.putExtra("password", etPassword.getText().toString());
+                            // 자신을 호출한 Activity로 데이터를 보낸다.
+                            setResult(RESULT_OK, result);
+                            finish();
+                        }
+                        else Toast.makeText(getApplicationContext(), "회원가입에 실패하였습니다", Toast.LENGTH_SHORT).show();
                     }
                 };
                 NetworkThread thread = new NetworkThread(
@@ -81,12 +90,7 @@ public class SignupActivity extends AppCompatActivity {
                 }catch(Exception e){
                     e.printStackTrace();
                 }
-                Intent result = new Intent(getApplicationContext(),LoginActivity.class);
-                result.putExtra("email", etEmail.getText().toString());
-                result.putExtra("password", etPassword.getText().toString());
-                // 자신을 호출한 Activity로 데이터를 보낸다.
-                setResult(RESULT_OK, result);
-                finish();
+
             }
         });
         btnCancel.setOnClickListener(new View.OnClickListener() {

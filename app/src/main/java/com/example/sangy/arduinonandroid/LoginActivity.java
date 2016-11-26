@@ -47,7 +47,8 @@ public class LoginActivity extends Activity{
                 String str = (String) msg.obj;
                 if(str.equals(email)){
                     Toast.makeText(getApplicationContext(),"로그인 성공하였습니다.",Toast.LENGTH_SHORT).show();
-                    finish();
+                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                    setResult(1,intent);
                 }
                 else if(str.equals("")){
                     Toast.makeText(getApplicationContext(),"존재하지 않는 email입니다.",Toast.LENGTH_SHORT).show();

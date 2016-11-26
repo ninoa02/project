@@ -22,7 +22,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView brightness;
     private TextView logout;
     private Gson gson = new Gson();
-
+    private LoopingThread thread;
+    private Handler mHandler;
+    private boolean fallFlag;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,9 +38,6 @@ public class MainActivity extends AppCompatActivity {
 
 //        로그인 화면을 띄운다
         startActivityForResult(new Intent(this, LoginActivity.class),1000);
-
-
-
 
         simpleSideDrawer = new SimpleSideDrawer(this);
         simpleSideDrawer.setRightBehindContentView(R.layout.right_menu);
@@ -56,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Handler mHandler = new Handler(){
+        mHandler = new Handler(){
             @Override
             public void handleMessage(Message msg) {
                 DeviceStatus2  ds2 = gson.fromJson(msg.obj.toString(), DeviceStatus2.class);
@@ -65,8 +64,8 @@ public class MainActivity extends AppCompatActivity {
                 DeviceStatus.setFall(ds2.getFall());
 
                 //기기 넘어짐 알림
-                if(DeviceStatus.getFall() == 1) Toast.makeText(getApplicationContext(),"쓰러졌습니다.",Toast.LENGTH_SHORT).show();
-                Log.d("candle","status : " + DeviceStatus.getStatus());
+                if(DeviceStatus.getFall() == 0) fallFlag = false;
+                if(DeviceStatus.getFall() == 1 && fallFlag == false) Toast.makeText(getApplicationContext(),"쓰러졌습니다.",Toast.LENGTH_SHORT).show();
                 //켜짐상태에 따른 조치
                 if(DeviceStatus.getStatus() == 1){
                     candle.setVisibility(View.VISIBLE);
@@ -91,9 +90,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        LoopingThread thread = new LoopingThread(mHandler);
-        thread.setDaemon(true);
-        thread.start();
+
 
         candle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +103,11 @@ public class MainActivity extends AppCompatActivity {
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == 1){
+            thread = new LoopingThread(mHandler);
+            thread.setDaemon(true);
+            thread.start();
+        }
     }
 
 }
