@@ -35,6 +35,11 @@ public class LoginActivity extends Activity{
         loginButton = (Button)findViewById(R.id.loginButton);
         signupButton = (Button)findViewById(R.id.signupButton);
         checkBox = (CheckBox)findViewById(R.id.checkBox);
+        emailInput.setText("12345");
+        passwordInput.setText("12345");
+
+
+
         if (MainActivity.mPreferences.getBoolean("check",false)){
             checkBox.setChecked(true);
             emailInput.setText(MainActivity.mPreferences.getString("email",null));
@@ -50,6 +55,7 @@ public class LoginActivity extends Activity{
                     Toast.makeText(getApplicationContext(),"로그인 성공하였습니다.",Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(LoginActivity.this,MainActivity.class);
                     setResult(1,intent);
+                    finish();
                 }
                 else if(str.equals("")){
                     Toast.makeText(getApplicationContext(),"존재하지 않는 email입니다.",Toast.LENGTH_SHORT).show();
@@ -75,6 +81,11 @@ public class LoginActivity extends Activity{
                 NetworkThread thread = new NetworkThread(mHandler,addr);
                 thread.setDaemon(true);
                 thread.start();
+                try {
+                    thread.join();
+                }catch (Exception e){
+                    e. printStackTrace();
+                }
             }
         });
         //회원가입 버튼에 대한 처리

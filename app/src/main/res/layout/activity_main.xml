@@ -4,12 +4,16 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
+    android:background="#000"
     tools:context="com.example.sangy.arduinonandroid.MainActivity"
     android:gravity="center">
+    <TextView
+        android:id="@+id/signal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <ImageView
         android:id="@+id/candle"
-        android:layout_width="200dp"
-        android:layout_height="300dp"
+        android:layout_width="300dp"
+        android:layout_height="400dp"
         android:src="@drawable/main_candle"/>
 </RelativeLayout>

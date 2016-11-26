@@ -1,7 +1,6 @@
 package com.example.sangy.arduinonandroid;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -23,8 +22,6 @@ public class SignupActivity extends AppCompatActivity {
     private EditText etDeviceNumber;
     private Button btnDone;
     private Button btnCancel;
-    SharedPreferences setting;
-    SharedPreferences.Editor editor;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

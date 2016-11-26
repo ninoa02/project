@@ -28,7 +28,7 @@ public class LoopingThread extends Thread {
         while(true){
             StringBuffer data = new StringBuffer();
             //요청문 작성
-            String device_no = String.valueOf(DeviceStatus.getDevice_no());
+            String device_no = "12345";//String.valueOf(MainActivity.mPreferences.getInt("device_no",0));
             String bright_set = String.valueOf(DeviceStatus.getBright_set());
             String connection_cycle = String.valueOf(DeviceStatus.getConnection_cycle());
             String req = "device_no=" + device_no +
@@ -67,7 +67,7 @@ public class LoopingThread extends Thread {
             Log.d("candle","루핑결과 : " + result);
             Message msg = Message.obtain(mHandler, 0, 0, 0, result);
             mHandler.sendMessage(msg);
-            SystemClock.sleep(500);
+            SystemClock.sleep(200);
         }
     }
 

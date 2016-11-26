@@ -16,8 +16,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.gson.Gson;
+
 import static com.example.sangy.arduinonandroid.R.id.alarm;
 import static com.example.sangy.arduinonandroid.R.id.brightness;
 import static com.example.sangy.arduinonandroid.R.id.logout;
@@ -28,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private LoopingThread thread;
     private Handler mHandler;
     private boolean fallFlag;
+    private TextView signal;
     static SharedPreferences mPreferences;
     static SharedPreferences.Editor editor;
     @Override
@@ -38,8 +42,13 @@ public class MainActivity extends AppCompatActivity {
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = mPreferences.edit();
         candle = (ImageView)findViewById(R.id.candle);
+        editor.putInt("device_no", 12345);
+        editor.putString("email", "12345");
+        editor.putString("password", "12345");
+        signal = (TextView)findViewById(R.id.signal);
+
         DeviceStatus.setDevice_no(mPreferences.getInt("device_no",0));
-        DeviceStatus.setBright_sta(mPreferences.getInt("bright_set",0));
+        DeviceStatus.setBright_set(mPreferences.getInt("bright_set",0));
         DeviceStatus.setConnection_cycle(mPreferences.getInt("connection_cycle",0));
 
 
@@ -57,18 +66,9 @@ public class MainActivity extends AppCompatActivity {
                 DeviceStatus.setStatus(ds2.getStatus());
                 DeviceStatus.setBright_sta(ds2.getBright_sta());
                 DeviceStatus.setFall(ds2.getFall());
-
-                //기기 넘어짐 알림
-                if(DeviceStatus.getFall() == 0) fallFlag = false;
-                if(DeviceStatus.getFall() == 1 && fallFlag == false) Toast.makeText(getApplicationContext(),"쓰러졌습니다.",Toast.LENGTH_SHORT).show();
-                //켜짐상태에 따른 조치
-                if(DeviceStatus.getStatus() == 1){
-                    candle.setVisibility(View.VISIBLE);
-                }
-                else {
-                    candle.setAlpha((float) 0.5);
-                    //꺼졌을 때
-                }
+                signal.setText();
+                fall();
+                status();
             }
         };
 
@@ -80,6 +80,23 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void fall(){
+        //기기 넘어짐 알림
+        if(DeviceStatus.getFall() == 0) fallFlag = false;
+        if(DeviceStatus.getFall() == 1 && fallFlag == false){
+            Toast.makeText(getApplicationContext(),"쓰러졌습니다.",Toast.LENGTH_SHORT).show();
+            fallFlag = true;
+        }
+    }
+    public void status(){
+        if(DeviceStatus.getStatus() == 1){
+            candle.setAlpha((float)1);
+        }
+        else {
+            candle.setAlpha((float) 0.4);
+            //꺼졌을 때
+        }
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -97,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 final SeekBar seekBar = (SeekBar)brView.findViewById(R.id.seekBar);
                 AlertDialog.Builder brDlg = new AlertDialog.Builder(MainActivity.this);
                 brDlg.setTitle("조도 설정");
+                seekBar.setProgress(DeviceStatus.getBright_set());
                 seekBar.setSecondaryProgress(DeviceStatus.getBright_sta());
                 brDlg.setPositiveButton("저장", new DialogInterface.OnClickListener() {
                     @Override
@@ -113,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 brDlg.setView(brView);
+                brDlg.show();
                 break;
             case R.id.connectionCycle:
                 View conView = getLayoutInflater().inflate(R.layout.activity_connection, null);
@@ -150,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 conDlg.setView(conView);
+                conDlg.show();
                 break;
             case logout:
                 break;
