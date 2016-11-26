@@ -30,8 +30,10 @@ public class LoopingThread extends Thread {
             //요청문 작성
             String device_no = String.valueOf(DeviceStatus.getDevice_no());
             String bright_set = String.valueOf(DeviceStatus.getBright_set());
+            String connection_cycle = String.valueOf(DeviceStatus.getConnection_cycle());
             String req = "device_no=" + device_no +
-                    "&bright_set=" + bright_set;
+                    "&bright_set=" + bright_set +
+                    "&connection_cycle=" + connection_cycle;
             if(DeviceStatus.getStatus_change() == 1){
                 req += "&status_change=" + 1;
                 DeviceStatus.setStatus_change(0);

@@ -67,6 +67,7 @@ public class SignupActivity extends AppCompatActivity {
                     public void handleMessage(Message msg) {
                         if(msg.obj.toString().equals("1")){
                             Toast.makeText(getApplicationContext(), "회원가입을 완료했습니다", Toast.LENGTH_SHORT).show();
+                            MainActivity.editor.putInt("device_no",Integer.parseInt(etDeviceNumber.getText().toString()));
                             Intent result = new Intent(getApplicationContext(),LoginActivity.class);
                             result.putExtra("email", etEmail.getText().toString());
                             result.putExtra("password", etPassword.getText().toString());

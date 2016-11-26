@@ -29,16 +29,17 @@ public class LoginActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-
         startActivity(new Intent(this,Splash.class));
         emailInput = (EditText)findViewById(R.id.emailInput);
         passwordInput = (EditText)findViewById(R.id.passwordInput);
         loginButton = (Button)findViewById(R.id.loginButton);
         signupButton = (Button)findViewById(R.id.signupButton);
         checkBox = (CheckBox)findViewById(R.id.checkBox);
-        emailInput.setText("1234");
-        passwordInput.setText("1234");
+        if (MainActivity.mPreferences.getBoolean("check",false)){
+            checkBox.setChecked(true);
+            emailInput.setText(MainActivity.mPreferences.getString("email",null));
+            passwordInput.setText(MainActivity.mPreferences.getString("password",null));
+        }
 
         //메인 핸들러 - 네트워크 스레드의 처리를 받아
         final Handler mHandler = new Handler(){
@@ -65,6 +66,12 @@ public class LoginActivity extends Activity{
                 email = emailInput.getText().toString();
                 password = passwordInput.getText().toString();
                 String addr = "login?email=" + email + "&password=" + password;
+                if(checkBox.isChecked()){
+                    MainActivity.editor.putBoolean("check", true);
+                    MainActivity.editor.putString("email", email);
+                    MainActivity.editor.putString("password", password);
+                }
+                else MainActivity.editor.putBoolean("check", false);
                 NetworkThread thread = new NetworkThread(mHandler,addr);
                 thread.setDaemon(true);
                 thread.start();

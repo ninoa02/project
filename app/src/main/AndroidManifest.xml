@@ -19,7 +19,6 @@
         <activity android:name=".LoginActivity"></activity>
         <activity android:name=".Splash"></activity>
         <activity android:name=".AlarmActivity"></activity>
-        <activity android:name=".BrightnessActivity"></activity>
     </application>
 
 </manifest>
