@@ -9,20 +9,15 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.gson.Gson;
-import com.navdrawer.SimpleSideDrawer;
-
-import static android.os.Build.VERSION_CODES.M;
 import static com.example.sangy.arduinonandroid.R.id.alarm;
 import static com.example.sangy.arduinonandroid.R.id.brightness;
 import static com.example.sangy.arduinonandroid.R.id.logout;
@@ -42,8 +37,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = mPreferences.edit();
+        candle = (ImageView)findViewById(R.id.candle);
         DeviceStatus.setDevice_no(mPreferences.getInt("device_no",0));
         DeviceStatus.setBright_sta(mPreferences.getInt("bright_set",0));
+        DeviceStatus.setConnection_cycle(mPreferences.getInt("connection_cycle",0));
+
+
 
 //        스플래시(로딩화면)이 뜬다
         startActivity(new Intent(this,Splash.class));
@@ -67,18 +66,16 @@ public class MainActivity extends AppCompatActivity {
                     candle.setVisibility(View.VISIBLE);
                 }
                 else {
-                    candle.setImageAlpha(50);
+                    candle.setAlpha((float) 0.5);
                     //꺼졌을 때
                 }
             }
         };
 
-
         candle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DeviceStatus.setStatus_change(1);
-
             }
         });
     }
@@ -93,15 +90,15 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case alarm:
-
+                startActivity(new Intent(MainActivity.this, AlarmActivity.class));
                 break;
             case brightness:
                 View brView = getLayoutInflater().inflate(R.layout.activity_brightness, null);
                 final SeekBar seekBar = (SeekBar)brView.findViewById(R.id.seekBar);
-                AlertDialog.Builder dlg = new AlertDialog.Builder(MainActivity.this);
-                dlg.setTitle("조도 설정");
+                AlertDialog.Builder brDlg = new AlertDialog.Builder(MainActivity.this);
+                brDlg.setTitle("조도 설정");
                 seekBar.setSecondaryProgress(DeviceStatus.getBright_sta());
-                dlg.setPositiveButton("저장", new DialogInterface.OnClickListener() {
+                brDlg.setPositiveButton("저장", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         editor.putInt("bright_set",seekBar.getProgress());
@@ -109,16 +106,50 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this,"저장되었습니다",Toast.LENGTH_SHORT).show();
                     }
                 });
-                dlg.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                brDlg.setNegativeButton("취소", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                     }
                 });
-                dlg.setView(brView);
+                brDlg.setView(brView);
                 break;
             case R.id.connectionCycle:
-
+                View conView = getLayoutInflater().inflate(R.layout.activity_connection, null);
+                final EditText cycle = (EditText)conView.findViewById(R.id.cycle);
+                final Button upCycle = (Button)conView.findViewById(R.id.upCycle);
+                final Button downCycle = (Button)conView.findViewById(R.id.downCycle);
+                upCycle.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        cycle.setText(String.valueOf(Integer.parseInt(cycle.getText().toString())+1));
+                    }
+                });
+                downCycle.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(Integer.parseInt(cycle.getText().toString()) > 0){
+                            cycle.setText(String.valueOf(Integer.parseInt(cycle.getText().toString())-1));
+                        }
+                    }
+                });
+                cycle.setText(String.valueOf(DeviceStatus.getConnection_cycle()));
+                AlertDialog.Builder conDlg = new AlertDialog.Builder(MainActivity.this);
+                conDlg.setTitle("통신주기 설정");
+                conDlg.setPositiveButton("저장", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        DeviceStatus.setConnection_cycle(Integer.parseInt(cycle.getText().toString()));
+                        editor.putInt("connection_cycle",Integer.parseInt(cycle.getText().toString()));
+                        Toast.makeText(MainActivity.this,"저장되었습니다",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                conDlg.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                });
+                conDlg.setView(conView);
                 break;
             case logout:
                 break;
