@@ -32,20 +32,17 @@ public class LoopingThread extends Thread {
             String bright_set = String.valueOf(DeviceStatus.getBright_set());
             String connection_cycle = String.valueOf(DeviceStatus.getConnection_cycle());
             String alarm_set = String.valueOf(DeviceStatus.getAlarm_set());
-            String alarm_start = String.valueOf(DeviceStatus.getAlarm_start());
-            String alarm_end = String.valueOf(DeviceStatus.getAlarm_end());
+            String alarm_start = DeviceStatus.getAlarm_start();
+            String alarm_end = DeviceStatus.getAlarm_end();
+            String status_change = String.valueOf(DeviceStatus.getStatus_change());
             String req = "device_no=" + device_no +
                     "&bright_set=" + bright_set +
                     "&connection_cycle=" + connection_cycle +
                     "&alarm_set=" + alarm_set +
                     "&alarm_start=" + alarm_start +
-                    "&alarm_end=" + alarm_end;
-            if(DeviceStatus.getStatus_change() == 1){
-                req += "&status_change=" + 1;
-                DeviceStatus.setStatus_change(0);
-            }
-            else req += "&status_change=" + 0;
-
+                    "&alarm_end=" + alarm_end +
+                    "&status_change=" + status_change;
+            if(DeviceStatus.getStatus_change()==1) DeviceStatus.setStatus_change(0);
             //네트워크 연결
             try {
                 URL url = new URL(DeviceStatus.SERVER + "lfand?" + req);

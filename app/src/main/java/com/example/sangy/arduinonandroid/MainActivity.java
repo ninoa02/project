@@ -42,11 +42,13 @@ public class MainActivity extends AppCompatActivity {
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = mPreferences.edit();
 
+        //설정값을 읽어온다
         DeviceStatus.setBright_set(mPreferences.getInt("bright_set",0));
         DeviceStatus.setConnection_cycle(mPreferences.getInt("connection_cycle",0));
         DeviceStatus.setAlarm_set(mPreferences.getInt("alarm_set",0));
         DeviceStatus.setAlarm_start(mPreferences.getString("alarm_start", null));
         DeviceStatus.setAlarm_end(mPreferences.getString("alarm_end", null));
+
 //        스플래시(로딩화면)를 호출한다
         startActivity(new Intent(this,Splash.class));
 
