@@ -48,7 +48,6 @@ public class NetworkThread extends Thread {
             e.printStackTrace();
         }
         String result = data.toString();
-        Log.d("candle","연결결과 : " + result);
         Message msg = Message.obtain(mHandler, 0, 0, 0, result);
         mHandler.sendMessage(msg);
     }

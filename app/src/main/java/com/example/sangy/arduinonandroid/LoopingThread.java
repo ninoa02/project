@@ -31,16 +31,20 @@ public class LoopingThread extends Thread {
             String device_no = "12345";//String.valueOf(MainActivity.mPreferences.getInt("device_no",0));
             String bright_set = String.valueOf(DeviceStatus.getBright_set());
             String connection_cycle = String.valueOf(DeviceStatus.getConnection_cycle());
+            String alarm_set = String.valueOf(DeviceStatus.getAlarm_set());
+            String alarm_start = String.valueOf(DeviceStatus.getAlarm_start());
+            String alarm_end = String.valueOf(DeviceStatus.getAlarm_end());
             String req = "device_no=" + device_no +
                     "&bright_set=" + bright_set +
-                    "&connection_cycle=" + connection_cycle;
+                    "&connection_cycle=" + connection_cycle +
+                    "&alarm_set=" + alarm_set +
+                    "&alarm_start=" + alarm_start +
+                    "&alarm_end=" + alarm_end;
             if(DeviceStatus.getStatus_change() == 1){
                 req += "&status_change=" + 1;
                 DeviceStatus.setStatus_change(0);
             }
-            else{
-                req += "&status_change=" + 0;
-            }
+            else req += "&status_change=" + 0;
 
             //네트워크 연결
             try {
@@ -67,7 +71,7 @@ public class LoopingThread extends Thread {
             Log.d("candle","루핑결과 : " + result);
             Message msg = Message.obtain(mHandler, 0, 0, 0, result);
             mHandler.sendMessage(msg);
-            SystemClock.sleep(200);
+            SystemClock.sleep(DeviceStatus.getAndCycle());
         }
     }
 

@@ -6,6 +6,7 @@ package com.example.sangy.arduinonandroid;
 
 public class DeviceStatus {
     final static String SERVER = "http://192.168.219.178:8080/candle/";
+    private static int andCycle = 500;
     private static int device_no = 1234;
     private static int bright_sta;
     private static int fall;
@@ -13,6 +14,41 @@ public class DeviceStatus {
     private static int status_change;
     private static int bright_set;
     private static int connection_cycle;
+    private static int alarm_set;
+    private static String alarm_start;
+    private static String alarm_end;
+
+    public static int getAndCycle() {
+        return andCycle;
+    }
+
+    public static void setAndCycle(int andCycle) {
+        DeviceStatus.andCycle = andCycle;
+    }
+
+    public static int getAlarm_set() {
+        return alarm_set;
+    }
+
+    public static void setAlarm_set(int alarm_set) {
+        DeviceStatus.alarm_set = alarm_set;
+    }
+
+    public static String getAlarm_start() {
+        return alarm_start;
+    }
+
+    public static void setAlarm_start(String alarm_start) {
+        DeviceStatus.alarm_start = alarm_start;
+    }
+
+    public static String getAlarm_end() {
+        return alarm_end;
+    }
+
+    public static void setAlarm_end(String alarm_end) {
+        DeviceStatus.alarm_end = alarm_end;
+    }
 
     public static int getDevice_no() {
         return device_no;
