@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -16,7 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private LoopingThread thread;
     private Handler mHandler;
     private boolean fallFlag;
-    private TextView signal;
+    private boolean brightFlag;
     static SharedPreferences mPreferences;
     static SharedPreferences.Editor editor;
     @Override
@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
         editor.putInt("device_no", 12345);
         editor.putString("email", "12345");
         editor.putString("password", "12345");
-        signal = (TextView)findViewById(R.id.signal);
 
         DeviceStatus.setDevice_no(mPreferences.getInt("device_no",0));
         DeviceStatus.setBright_set(mPreferences.getInt("bright_set",0));
@@ -66,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
                 DeviceStatus.setStatus(ds2.getStatus());
                 DeviceStatus.setBright_sta(ds2.getBright_sta());
                 DeviceStatus.setFall(ds2.getFall());
-                signal.setText();
                 fall();
                 status();
             }
@@ -93,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
             candle.setAlpha((float)1);
         }
         else {
-            candle.setAlpha((float) 0.4);
+            candle.setAlpha((float) 0.2);
             //꺼졌을 때
         }
     }
@@ -115,7 +113,18 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog.Builder brDlg = new AlertDialog.Builder(MainActivity.this);
                 brDlg.setTitle("조도 설정");
                 seekBar.setProgress(DeviceStatus.getBright_set());
-                seekBar.setSecondaryProgress(DeviceStatus.getBright_sta());
+                brightFlag = true;
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        while(brightFlag){
+                            seekBar.setSecondaryProgress(DeviceStatus.getBright_sta());
+                            SystemClock.sleep(500);
+                        }
+                    }
+                });
+                thread.setDaemon(true);
+                thread.start();
                 brDlg.setPositiveButton("저장", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -127,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                 brDlg.setNegativeButton("취소", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-
+                        brightFlag = false;
                     }
                 });
                 brDlg.setView(brView);
