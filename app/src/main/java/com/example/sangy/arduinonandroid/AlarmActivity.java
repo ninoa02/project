@@ -26,14 +26,11 @@ public class AlarmActivity extends AppCompatActivity {
         timePickerStart.setMinute(Integer.parseInt(DeviceStatus.getAlarm_start().substring(2)));
         timePickerStop.setHour(Integer.parseInt(DeviceStatus.getAlarm_end().substring(0,2)));
         timePickerStop.setMinute(Integer.parseInt(DeviceStatus.getAlarm_end().substring(2)));
-
-
     }
-
-
     public void release(View view){
         DeviceStatus.setAlarm_set(0);
         MainActivity.editor.putInt("alarm_set", 0);
+        Toast.makeText(getApplicationContext(),"해제 되었습니다",Toast.LENGTH_SHORT).show();
         finish();
     }
     public void setting(View view){
@@ -53,7 +50,10 @@ public class AlarmActivity extends AppCompatActivity {
         MainActivity.editor.putString("alarm_start", startAlarm);
         MainActivity.editor.putString("alarm_end", endAlarm);
         MainActivity.editor.putInt("alarm_set", 1);
-        Toast.makeText(getApplicationContext(),"설정되었습니다",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(),"설정 되었습니다",Toast.LENGTH_SHORT).show();
+        finish();
+    }
+    public void cancel(){
         finish();
     }
 }

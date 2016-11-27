@@ -35,12 +35,8 @@ public class LoginActivity extends Activity{
         loginButton = (Button)findViewById(R.id.loginButton);
         signupButton = (Button)findViewById(R.id.signupButton);
         checkBox = (CheckBox)findViewById(R.id.checkBox);
-        emailInput.setText("12345");
-        passwordInput.setText("12345");
 
-
-
-        if (MainActivity.mPreferences.getBoolean("check",false)){
+        if (MainActivity.mPreferences.getBoolean("check",true)){
             checkBox.setChecked(true);
             emailInput.setText(MainActivity.mPreferences.getString("email",null));
             passwordInput.setText(MainActivity.mPreferences.getString("password",null));
@@ -50,17 +46,18 @@ public class LoginActivity extends Activity{
         final Handler mHandler = new Handler(){
             @Override
             public void handleMessage(Message msg) {
-                String str = (String) msg.obj;
-                if(str.equals(email)){
+                String[] str = msg.obj.toString().split(":");
+                if(str[0].equals(email)){
+                    DeviceStatus.setDevice_no(Integer.parseInt(str[1]));
                     Toast.makeText(getApplicationContext(),"로그인 성공하였습니다.",Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(LoginActivity.this,MainActivity.class);
                     setResult(1,intent);
                     finish();
                 }
-                else if(str.equals("")){
+                else if(str[0].equals("no_email")){
                     Toast.makeText(getApplicationContext(),"존재하지 않는 email입니다.",Toast.LENGTH_SHORT).show();
                 }
-                else if(str.equals("wrongpassword")){
+                else if(str[0].equals("wr_ps")){
                     Toast.makeText(getApplicationContext(),"비밀번호가 틀립니다.",Toast.LENGTH_SHORT).show();
                 }
             }
@@ -77,7 +74,11 @@ public class LoginActivity extends Activity{
                     MainActivity.editor.putString("email", email);
                     MainActivity.editor.putString("password", password);
                 }
-                else MainActivity.editor.putBoolean("check", false);
+                else {
+                    MainActivity.editor.putBoolean("check", false);
+                    MainActivity.editor.putString("email", "");
+                    MainActivity.editor.putString("password", "");
+                }
                 NetworkThread thread = new NetworkThread(mHandler,addr);
                 thread.setDaemon(true);
                 thread.start();

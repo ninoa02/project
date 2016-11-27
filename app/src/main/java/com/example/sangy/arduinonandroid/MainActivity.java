@@ -18,7 +18,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Toast;
+
 import com.google.gson.Gson;
+
 import static com.example.sangy.arduinonandroid.R.id.alarm;
 import static com.example.sangy.arduinonandroid.R.id.brightness;
 import static com.example.sangy.arduinonandroid.R.id.logout;
@@ -35,19 +37,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        메인화면이 뜬다
         setContentView(R.layout.activity_main);
+        candle = (ImageView)findViewById(R.id.candle);
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         editor = mPreferences.edit();
-        candle = (ImageView)findViewById(R.id.candle);
-        editor.putInt("device_no", 12345);
-        editor.putString("email", "12345");
-        editor.putString("password", "12345");
 
-        DeviceStatus.setDevice_no(mPreferences.getInt("device_no",0));
         DeviceStatus.setBright_set(mPreferences.getInt("bright_set",0));
         DeviceStatus.setConnection_cycle(mPreferences.getInt("connection_cycle",0));
-
+        DeviceStatus.setAlarm_set(mPreferences.getInt("alarm_set",0));
+        DeviceStatus.setAlarm_start(mPreferences.getString("alarm_start", null));
+        DeviceStatus.setAlarm_end(mPreferences.getString("alarm_end", null));
 //        스플래시(로딩화면)를 호출한다
         startActivity(new Intent(this,Splash.class));
 

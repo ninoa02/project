@@ -8,6 +8,7 @@
     tools:context="com.example.sangy.arduinonandroid.MainActivity"
     android:gravity="center">
     <ImageView
+        android:onClick="clickCandle"
         android:id="@+id/candle"
         android:layout_width="300dp"
         android:layout_height="400dp"
