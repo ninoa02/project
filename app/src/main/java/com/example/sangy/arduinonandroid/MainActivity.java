@@ -46,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
         DeviceStatus.setBright_set(mPreferences.getInt("bright_set",0));
         DeviceStatus.setConnection_cycle(mPreferences.getInt("connection_cycle",0));
         DeviceStatus.setAlarm_set(mPreferences.getInt("alarm_set",0));
-        DeviceStatus.setAlarm_start(mPreferences.getString("alarm_start", null));
-        DeviceStatus.setAlarm_end(mPreferences.getString("alarm_end", null));
+        DeviceStatus.setAlarm_start(mPreferences.getString("alarm_start", "0000"));
+        DeviceStatus.setAlarm_end(mPreferences.getString("alarm_end", "0000"));
 
 //        스플래시(로딩화면)를 호출한다
         startActivity(new Intent(this,Splash.class));
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void fall(){
         //기기 넘어짐 알림
-        fallFlag = (DeviceStatus.getFall() == 1) ? false : true;
+        fallFlag = (DeviceStatus.getFall() == 1) ? false : fallFlag;
         if(DeviceStatus.getFall() == 0 && fallFlag == false){
             Toast.makeText(getApplicationContext(),"쓰러졌습니다.",Toast.LENGTH_SHORT).show();
             fallFlag = true;
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 while(brightFlag){
                     seekBar.setSecondaryProgress(DeviceStatus.getBright_sta());
-                    SystemClock.sleep(500);
+                    SystemClock.sleep(200);
                 }
             }
         });

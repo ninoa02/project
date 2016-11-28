@@ -46,9 +46,11 @@ public class LoginActivity extends Activity{
         final Handler mHandler = new Handler(){
             @Override
             public void handleMessage(Message msg) {
+                Log.d("candle", "메시지" + msg.obj.toString());
                 String[] str = msg.obj.toString().split(":");
                 if(str[0].equals(email)){
                     DeviceStatus.setDevice_no(Integer.parseInt(str[1]));
+                    MainActivity.editor.putInt("device_no", Integer.parseInt(str[1]));
                     Toast.makeText(getApplicationContext(),"로그인 성공하였습니다.",Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(LoginActivity.this,MainActivity.class);
                     setResult(1,intent);
@@ -104,10 +106,6 @@ public class LoginActivity extends Activity{
         super.onActivityResult(requestCode, resultCode, data);
 
         // setResult를 통해 받아온 요청번호, 상태, 데이터
-        Log.d("RESULT", requestCode + "");
-        Log.d("RESULT", resultCode + "");
-        Log.d("RESULT", data + "");
-
         if(requestCode == 1000 && resultCode == RESULT_OK) {
             emailInput.setText(data.getStringExtra("email"));
             passwordInput.setText(data.getStringExtra("password"));

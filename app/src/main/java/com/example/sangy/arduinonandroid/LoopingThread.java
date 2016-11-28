@@ -29,11 +29,14 @@ public class LoopingThread extends Thread {
             StringBuffer data = new StringBuffer();
             //요청문 작성
             String device_no = "12345";//String.valueOf(MainActivity.mPreferences.getInt("device_no",0));
+            Log.d("device_no" , "device_no" + device_no);
             String bright_set = String.valueOf(DeviceStatus.getBright_set());
             String connection_cycle = String.valueOf(DeviceStatus.getConnection_cycle());
             String alarm_set = String.valueOf(DeviceStatus.getAlarm_set());
             String alarm_start = DeviceStatus.getAlarm_start();
             String alarm_end = DeviceStatus.getAlarm_end();
+            Log.d("hour", "hour :" + alarm_start);
+            Log.d("hour", "hour :" + alarm_end);
             String status_change = String.valueOf(DeviceStatus.getStatus_change());
             String req = "device_no=" + device_no +
                     "&bright_set=" + bright_set +

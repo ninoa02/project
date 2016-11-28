@@ -8,8 +8,6 @@ public class DeviceStatus2 {
     private int bright_sta;
     private int fall;
     private int status;
-    private int status_change;
-    private int bright_set;
     private int connection_cycle;
 
     public int getBright_sta() {
@@ -34,22 +32,6 @@ public class DeviceStatus2 {
 
     public void setStatus(int status) {
         this.status = status;
-    }
-
-    public int getStatus_change() {
-        return status_change;
-    }
-
-    public void setStatus_change(int status_change) {
-        this.status_change = status_change;
-    }
-
-    public int getBright_set() {
-        return bright_set;
-    }
-
-    public void setBright_set(int bright_set) {
-        this.bright_set = bright_set;
     }
 
     public int getConnection_cycle() {
