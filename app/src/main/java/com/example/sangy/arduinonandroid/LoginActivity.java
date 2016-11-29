@@ -53,7 +53,7 @@ public class LoginActivity extends Activity{
                     MainActivity.editor.putInt("device_no", Integer.parseInt(str[1]));
                     Toast.makeText(getApplicationContext(),"로그인 성공하였습니다.",Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                    setResult(1,intent);
+                    setResult(1, intent);
                     finish();
                 }
                 else if(str[0].equals("no_email")){

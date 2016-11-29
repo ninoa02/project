@@ -74,5 +74,4 @@ public class LoopingThread extends Thread {
             SystemClock.sleep(DeviceStatus.getAndCycle());
         }
     }
-
 }
